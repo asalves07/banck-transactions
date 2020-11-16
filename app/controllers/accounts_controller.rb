@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :authenticate_user!
 
   def index
     @accounts = Account.all
@@ -7,11 +8,6 @@ class AccountsController < ApplicationController
   def show
   end
 
-  def new 
-  end
-
-  def create 
-  end
 
   def edit
   end
