@@ -2,22 +2,24 @@ class BankStatementsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_account
 
+  def index
+  end
+
   def new
     @bank_statement = BankStatement.new
   end
   
-
   def deposit
     value = params[:value].to_f
     if @account.state == "open"
       if create_statement(@account, value, :deposit)
         crediting(@account, value)
-        redirect_to accounts_path
+        render :index
       else
-        render :new, notice: 'Deposito não efetuado'
+        render :new, status: :unprocessable_entity, notice: 'Deposito não efetuado'
       end
     else
-      render :new, notice: 'Deposito não efetuado'
+      render :new, status: :unprocessable_entity, notice: 'Deposito não efetuado'
     end
 
   end
@@ -25,14 +27,14 @@ class BankStatementsController < ApplicationController
   def extract
     value = params[:value].to_f
     if @account.balance >= value
-      if create_statement(@account, value, :extract)
+      if create_statement(@account, value, "extract")
         withdrawal(@account, value)
-        redirect_to accounts_path
+        render :index
       else
-        render :new, notice: 'saque não efetuado'
+        render :new, status: :unprocessable_entity, notice: 'saque não efetuado'
       end
     else
-      render :new, notice: 'saque não efetuado'
+      render :new, status: :unprocessable_entity, notice: 'saque não efetuado'
     end
   end
 
@@ -45,17 +47,19 @@ class BankStatementsController < ApplicationController
         to_account = movement(params[:number])
         create_statement(to_account, value, :transfer, 0.0, @bank_statement)
         crediting(to_account, value)
-        redirect_to accounts_path
+        render :index
       else
-        render :new, notice: 'transferência não efetuado'
+        render :new, status: :unprocessable_entity, notice: 'transferência não efetuado'
       end
     elsif @account.balance >= value && @account.state == "open"
       if create_statement(@account, value, :transfer, rate)
         withdrawal(@account, value, rate)
-        redirect_to accounts_path
+        render :index
       else
-        render :new, notice: 'transferência não efetuado'
+        render :new, status: :unprocessable_entity, notice: 'transferência não efetuado'
       end
+    else
+      render :new, status: :unprocessable_entity, notice: 'transferência não efetuado'
     end
   end
 

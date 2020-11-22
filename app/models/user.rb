@@ -9,18 +9,18 @@ class User < ApplicationRecord
   has_one :profile
   accepts_nested_attributes_for :profile, :reject_if => :all_blank
 
-  after_create :create_account
+  # after_create :create_account
 
-  private
+  # private
 
-  def create_account
-    Account.create!(
-      number: Faker::Number.number(digits: 10).to_s,
-      agency: "001",
-      type_account: 1,
-      balance: 0.0,
-      state: 1,
-      user: User.last
-    )
-  end
+  # def create_account
+  #   Account.create!(
+  #     number: Faker::Number.number(digits: 10).to_s,
+  #     agency: "001",
+  #     type_account: 1,
+  #     balance: 0.0,
+  #     state: 1,
+  #     user: User.last
+  #   )
+  # end
 end
