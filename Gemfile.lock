@@ -61,8 +61,12 @@ GEM
     bootsnap (1.5.1)
       msgpack (~> 1.0)
     builder (3.2.4)
+    business_time (0.9.3)
+      activesupport (>= 3.2.0)
+      tzinfo
     byebug (11.1.3)
     clipboard (1.3.5)
+    coderay (1.1.3)
     concurrent-ruby (1.1.7)
     cpf_faker (1.3.0)
       clipboard
@@ -110,6 +114,14 @@ GEM
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
     pg (1.2.3)
+    pry (0.13.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
+    pry-byebug (3.9.0)
+      byebug (~> 11.0)
+      pry (~> 0.13.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     puma (4.3.6)
       nio4r (~> 2.0)
     rack (2.2.3)
@@ -219,7 +231,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.4.2)
-  byebug
+  business_time
   cpf_faker
   devise
   factory_bot_rails
@@ -227,6 +239,8 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (~> 3.2)
   pg (>= 0.18, < 2.0)
+  pry-byebug
+  pry-rails
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.4)
   rspec-rails (~> 4.0.1)

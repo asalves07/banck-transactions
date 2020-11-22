@@ -32,13 +32,16 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # Auth
 gem 'devise'
 
+gem "business_time"
+
 group :development, :test do
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-byebug', platforms: %i[mri mingw x64_mingw]
   gem 'rspec-rails', '~> 4.0.1'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'faker'
   gem 'cpf_faker'
+  gem 'pry-rails'
 end
 
 group :development do

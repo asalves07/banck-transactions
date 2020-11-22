@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update(params_user)
+    if @user.update(user_params)
       bypass_sign_in(@user)
     else
       render :edit
@@ -20,8 +20,8 @@ class UsersController < ApplicationController
     @user = User.find(current_user.id)
   end
 
-  def params_user
-    params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation, profile_attributes: [:id, :address, :gender, :birthdate])
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, profile_attributes: [:id, :address, :gender, :birthdate, :cpf])
   end
 
   def verify_password

@@ -5,7 +5,7 @@ RSpec.describe "Accounts", type: :request do
   
   it "Test Home" do
     sign_in user
-    get '/accounts/index'
+    get '/accounts'
     expect(response).to have_http_status(:ok)
   end
 end

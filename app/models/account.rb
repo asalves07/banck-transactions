@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   belongs_to :user
+  has_many :bank_statements
 
   validates :number, presence: true, uniqueness: {case_sensitive: false}
   validates :agency, presence: true
@@ -9,4 +10,6 @@ class Account < ApplicationRecord
 
   enum type_account: {current: 1, saving: 2}
   enum state: {open: 1, closed: 2}
+
+  include NumberSearchable
 end
