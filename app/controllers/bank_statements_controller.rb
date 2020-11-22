@@ -43,7 +43,7 @@ class BankStatementsController < ApplicationController
       if create_statement(@account, value, :transfer, rate)
         withdrawal(@account, value, rate)
         to_account = movement(params[:number])
-        create_statement(to_account, value, :transfer, 0.0, BankStatement.last)
+        create_statement(to_account, value, :transfer, 0.0, @bank_statement)
         crediting(to_account, value)
         redirect_to accounts_path
       else

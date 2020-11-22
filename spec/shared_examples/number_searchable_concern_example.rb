@@ -5,11 +5,11 @@ shared_examples "number searchable concern" do |factory_number|
 
   it "Found records with expression in :number" do
     found_records = described_class.search_by_number(search_params)
-    expect(found_records.to_a).to contain_exactly(*record_to_find)
+    expect(found_records).to eq record_to_find
   end
 
   it "ignores records without expression in :number" do
     found_records = described_class.search_by_number(search_params)
-    expect(found_records.to_a).to_not include(*records_to_ignore)
+    expect(found_records).to_not eq records_to_ignore
   end
 end

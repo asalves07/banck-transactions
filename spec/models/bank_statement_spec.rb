@@ -11,16 +11,16 @@ RSpec.describe BankStatement, type: :model do
 
   context "date" do
     # let!(:search_params) {"2020-11-11", "2020-11-17"}
-    let!(:record_to_find) { create_list(:bank_statement, 3 )}
+    let!(:record_to_find) { create(:bank_statement)}
     let!(:record_to_ignore) {create(:bank_statement, created_at: "2020-12-01")}
 
     it "Found records between date" do
-      found_records = BankStatement.created_between("2020-11-01", "2020-11-30")
+      found_records = BankStatement.created_between("2020-11-01", "2020-11-30", record_to_find.account)
       expect(found_records).to include(*record_to_find)
     end
 
     it "ignores records" do
-      found_records = BankStatement.created_between("2020-11-01", "2020-11-30")
+      found_records = BankStatement.created_between("2020-11-01", "2020-11-30", record_to_ignore.account)
       expect(found_records.to_a).to_not include(*record_to_ignore)
     end
     
