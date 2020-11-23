@@ -1,15 +1,85 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>BankTransactions</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application' %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="wrapper">
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+              <h3>SEU BANCO</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <li class="active">
+                <%= link_to accounts_path do %>
+                  <i class="fas fa-home"></i> CONTA BANCÁRIA
+                <% end %>
+                </li>
+                <li>
+                  <%= link_to new_deposit_path do %>
+                    <i class="fas fa-arrow-up"></i> Depósitos
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to new_extract_path do %>
+                    <i class="fas fa-arrow-down"></i> Saques
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to in_transfer_path do %>
+                    <i class="fas fa-arrow-right "></i>Transferência
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to ex_transfer_path do %>
+                    <i class="fas fa-arrow-right "></i>Transferência para outros bancos
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to statement_path do %>
+                    <i class="fas fa-file"></i>Extratos bancário
+                  <% end %>
+                </li>
+                <hr>
+                <li>
+                  <%= link_to edit_user_path(current_user) do %>
+                    <i class="fas fa-edit"></i> Editar conta
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to destroy_user_session_path, method: :delete do %>
+                    Sair
+                  <% end %>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+          <div>
+            <%= yield %>
+          </div>
+        </div>
+    </div>
+
+    <%= javascript_pack_tag 'application' %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
   </body>
+
 </html>

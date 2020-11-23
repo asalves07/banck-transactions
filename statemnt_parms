@@ -1,0 +1,32 @@
+
+[1mFrom:[0m /home/asalves/bank_transactions/app/controllers/bank_statements_controller.rb:50 BankStatementsController#transfer:
+
+    [1;34m47[0m: [32mdef[0m [1;34mtransfer[0m
+    [1;34m48[0m:   value = statement_params.values.shift.to_f
+    [1;34m49[0m:   binding.pry
+ => [1;34m50[0m:   number = statement_params.numbers.shift.to_f
+    [1;34m51[0m: 
+    [1;34m52[0m:   binding.pry
+    [1;34m53[0m:   
+    [1;34m54[0m:   rate = rate(value)
+    [1;34m55[0m:   [32mif[0m @account.balance >= value && number != [1;36mnil[0m && @account.state == [31m[1;31m"[0m[31mopen[1;31m"[0m[31m[0m
+    [1;34m56[0m:     [32mif[0m create_statement(@account, value, [33m:transfer[0m, rate)
+    [1;34m57[0m:       withdrawal(@account, value, rate)
+    [1;34m58[0m:       to_account = movement(params[[33m:number[0m])
+    [1;34m59[0m:       create_statement(to_account, value, [33m:transfer[0m, [1;35m0.0[0m, @bank_statement)
+    [1;34m60[0m:       crediting(to_account, value)
+    [1;34m61[0m:     [32melse[0m
+    [1;34m62[0m:       render [33m:new[0m, [35mstatus[0m: [33m:unprocessable_entity[0m, [35mnotice[0m: [31m[1;31m'[0m[31mtransferência não efetuado[1;31m'[0m[31m[0m
+    [1;34m63[0m:     [32mend[0m
+    [1;34m64[0m:   [32melsif[0m @account.balance >= value && @account.state == [31m[1;31m"[0m[31mopen[1;31m"[0m[31m[0m
+    [1;34m65[0m:     [32mif[0m create_statement(@account, value, [33m:transfer[0m, rate)
+    [1;34m66[0m:       withdrawal(@account, value, rate)
+    [1;34m67[0m:     [32melse[0m
+    [1;34m68[0m:       render [33m:new[0m, [35mstatus[0m: [33m:unprocessable_entity[0m, [35mnotice[0m: [31m[1;31m'[0m[31mtransferência não efetuado[1;31m'[0m[31m[0m
+    [1;34m69[0m:     [32mend[0m
+    [1;34m70[0m:   [32melse[0m
+    [1;34m71[0m:     render [33m:new[0m, [35mstatus[0m: [33m:unprocessable_entity[0m, [35mnotice[0m: [31m[1;31m'[0m[31mtransferência não efetuado[1;31m'[0m[31m[0m
+    [1;34m72[0m:   [32mend[0m
+    [1;34m73[0m:   redirect_to accounts_path
+    [1;34m74[0m: [32mend[0m
+

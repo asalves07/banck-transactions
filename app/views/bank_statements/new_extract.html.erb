@@ -1,0 +1,44 @@
+<%= form_with(url: extract_path, model: @bank_statement, local: true) do |form| %>
+  <% if @bank_statement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bank_statement.errors.count, "error") %> prohibited this team from being saved:</h2>
+
+      <ul>
+        <% @bank_statement.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 ">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2> Saque</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <br>
+
+          <div id="demo-form2" data-parsley-validate="" class="form-horizontal form-label-left" novalidate="">
+
+            <div class="item form-group">
+              <%= form.label :value, class:"col-form-label col-md-3 col-sm-3 label-align" %>
+              <div class="col-md-6 col-sm-6 ">
+                <%= form.text_field :value, class: "form-control" %>
+              </div>
+            </div>
+
+            <div class="item form-group">
+              <div class="col-md-6 col-sm-6 offset-md-3">
+                <%= link_to 'Voltar', accounts_path, class: "btn btn-danger"%>
+                <button type="submit" class="btn btn-success">Sacar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

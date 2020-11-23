@@ -35,29 +35,19 @@ RSpec.describe "Accounts", type: :request do
       expect(response.body).to include(expected_account.state)
     end
 
-    it "returns success status" do
-      sign_in user
-      post url
-      expect(response).to have_http_status(:ok)
-    end
   end
 
   context "PATCH /accounts/:id" do
     let!(:account) {create(:account, user: user)}
-    let(:url) {"/accounts/#{account.id}"}
+    let(:url) {"/shut_down"}
     let(:new_state){"closed"}
 
     it 'updates account' do
       sign_in user
-      patch url
+      get url
       account.reload
       expect(account.state).to eq new_state
     end
 
-    it "returns success status" do
-      sign_in user
-      patch url
-      expect(response).to have_http_status(:ok)
-    end
   end
 end

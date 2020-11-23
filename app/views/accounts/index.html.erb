@@ -1,34 +1,28 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Projects</h1> <br>
+<div class="jumbotron">
+  <% if current_user.account == nil %>
+    <%= link_to "Criar conta", accounts_path, method: :post, class: "btn btn-primary btn-lg" %>
+  <% else %>
+    <% if current_user.name == nil %>
+      <h1 class="display-4">Bem-vindo!</h1>
+    <% else %>
+      <h1 class="display-4">Olá, <%= current_user.name%>!</h1>
+    <% end %>
+      
 
-
-<table class="table table-striped table-hover">
-  <thead class="thead-light">
-    <tr>
-      <th>conta</th>
-      <th>name</th>
-      <th>agencia</th>
-      <th>tipo de conta</th>
-      <th>conta</th>
-      <th>saldo</th>
-      <th colspan="2"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr>
-      <td><%= @account.number %></td>
-      <td><%= @account.user.name %></td>
-      <td><%= @account.agency %></td>
-      <td><%= @account.type_account %></td>
-      <td><%= @account.state %></td>
-      <td><%= @account.balance %></td>
-    </tr>
-  </tbody>
-</table>
+    Agência<p class="lead"><%= @account.agency %></p>
+    Conta<p class="lead"><%= @account.number %></p>
+    Tipo de conta<p class="lead"><%= @account.type_account %></p>
+    Saldo Disponível <p class="lead"> <%= @account.balance %></p>
+    <% if @account.state == "open"%>
+      <p class="lead">Sua conta está aberta. Você pode fazer todas as operações diponíveis</p>
+      <hr class="my-4">
+      <p>Se você encerrar a conta só será limitado a operações de saque até o limite do saldo</p>
+      <%= link_to "Encerrar conta", shut_down_path, class: "btn btn-danger btn-lg" %>
+    <% else %>
+      <p class="lead">Sua conta foi encerrada, poderá apenas sacar o seu dinheiro</p>
+    <% end %>
+  <% end %>
     
-<br>
-
-
-<%= link_to "sair", destroy_user_session_path, method: :delete %>
+</div>

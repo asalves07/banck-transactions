@@ -6,40 +6,42 @@ RSpec.describe "BankStatements", type: :request do
   context "GET /statement" do
   end
 
-  context "GET /deposit" do
-    let(:url) {"/deposit?value=100"}
+  context "POST /deposit" do
+    let(:url) {"/deposit"}
 
     context "when state is open" do 
       let!(:account) {create(:account, user: user)}
+      let(:statement_params) {{ bank_statement: attributes_for(:bank_statement) }}
 
       it "adds a new BankStatement" do
         expect do
           sign_in user
-          get url
+          post url, params: statement_params
         end.to change(BankStatement, :count).by(1)
 
       end
 
       it "returns success status" do
         sign_in user
-        get url
+        post url, params: statement_params
         expect(response).to have_http_status(:ok)
       end
     end
 
     context "when state is closed" do
       let!(:account) {create(:account, state: :closed, user: user)}
+      let(:statement_params) {{ bank_statement: attributes_for(:bank_statement) }}
 
       it "does not adds a new BankStatement" do
         expect do
           sign_in user
-          get url
+          post url, params: statement_params
         end.to_not change(BankStatement, :count)
       end
 
       it "returns success status" do
         sign_in user
-        get url
+        post url, params: statement_params
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -122,18 +124,19 @@ RSpec.describe "BankStatements", type: :request do
 
     context "when state is closed and the amount is less than the balance" do
       let!(:account) {create(:account, state: :closed, balance: 200.0, user: user)}
-      let(:url) {"/transfer?value=100"}
+      let(:url) {"/transfer"}
+      let(:statement_params) {{ bank_statement: attributes_for(:bank_statement) }}
 
       it "does not adds a new BankStatement" do
         expect do
           sign_in user
-          post url
+          post url, params: statement_params
         end.to_not change(BankStatement, :count)
       end
 
       it "returns success status" do
         sign_in user
-        post url
+        post url, params: statement_params
         expect(response).to have_http_status(:unprocessable_entity)
       end
 

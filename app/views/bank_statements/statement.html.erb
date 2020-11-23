@@ -1,35 +1,57 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Projects</h1> <br>
+<%= form_with( url: statement_path, method: :get, model: @account, local: true, html: {class: "form-horizontal form-label-left"}) do |form| %>
+  <div class="item form-group">
+    <%= form.label :start_date, class: "col-form-label col-md-3 col-sm-3 label-align" %>
+    <div class="col-md-6 col-sm-6 ">
+      <%= form.date_field :start_date, class: "form-control datepicker"%>
+    </div>
+  </div>
+  <div class="item form-group">
+    <%= form.label :end_date, class: "col-form-label col-md-3 col-sm-3 label-align" %>
+    <div class="col-md-6 col-sm-6 ">
+      <%= form.date_field :end_date, class: "form-control datepicker"%>
+    </div>
+  </div>
+  <div class="item form-group">
+    <div class="col-md-6 col-sm-6 offset-md"> 
+      <button type="submit" class="btn btn-success">Buscar</button>
+    </div>
+  </div>
+<% end %>
+
+<br>
 
 
 <table class="table table-striped table-hover">
   <thead class="thead-light">
     <tr>
-      <th>type_transaction</th>
-      <th>value</th>
-      <th>account.number</th>
-      <th>transfer.account.number</th>
-      <th>rate</th>
-      <th colspan="2"></th>
+      <th>conta</th>
+      <th>valor</th>
+      <th>transação</th>
+      <th>transferência recebida</th>
+      <th>taxa</th>
+      <th>Data</th>
     </tr>
   </thead>
 
   <tbody>
     <% @bank_statements.each do |bank_statement| %>
       <tr>
+        <td ><%= bank_statement.account.number %></td>
         <td><%= bank_statement.type_transaction %></td>
         <td><%= bank_statement.value %></td>
-        <td><%= bank_statement.account.number %></td>
         <% if bank_statement.transfer != nil %>
           <td><%= bank_statement.transfer.account.number %></td>
         <% else %>
           <td></td>
         <% end  %>
         <td><%= bank_statement.rate %></td>
+        <td><%= bank_statement.created_at %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
     
 <br>
+

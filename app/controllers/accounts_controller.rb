@@ -23,9 +23,9 @@ class AccountsController < ApplicationController
   end
   
 
-  def update
+  def shut_down
     closed(@account)
-    render :index, notice: 'Conta Encerrada'
+    redirect_to accounts_path, notice: 'Conta Encerrada'
   end
 
   private

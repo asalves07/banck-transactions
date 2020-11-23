@@ -2,69 +2,96 @@ class BankStatementsController < ApplicationController
   before_action :authenticate_user!
   before_action :load_account
 
-  def index
+  def new_transfer
+    @bank_statement = BankStatement.new
   end
 
-  def new
+  def ex_transfer
+    @bank_statement = BankStatement.new
+  end
+
+  def new_deposit
+    @bank_statement = BankStatement.new
+  end
+
+  def new_extract
     @bank_statement = BankStatement.new
   end
   
   def deposit
-    value = params[:value].to_f
+    value = statement_params.values.shift.to_f
+    
     if @account.state == "open"
       if create_statement(@account, value, :deposit)
         crediting(@account, value)
-        render :index
       else
-        render :new, status: :unprocessable_entity, notice: 'Deposito não efetuado'
+        render :new_deposit, status: :unprocessable_entity, notice: 'Deposito não efetuado'
       end
     else
-      render :new, status: :unprocessable_entity, notice: 'Deposito não efetuado'
+      render :new_deposit, status: :unprocessable_entity, notice: 'Deposito não efetuado'
     end
-
+    redirect_to accounts_path
   end
 
   def extract
-    value = params[:value].to_f
+    value = statement_params.values.shift.to_f
     if @account.balance >= value
       if create_statement(@account, value, "extract")
         withdrawal(@account, value)
-        render :index
       else
-        render :new, status: :unprocessable_entity, notice: 'saque não efetuado'
+        render :new_extract, status: :unprocessable_entity, notice: 'saque não efetuado'
       end
     else
-      render :new, status: :unprocessable_entity, notice: 'saque não efetuado'
+      render :new_extract, status: :unprocessable_entity, notice: 'saque não efetuado'
     end
+    redirect_to accounts_path
   end
 
   def transfer
-    value = params[:value].to_f
+    value = statement_params.values.shift.to_f
+    if statement_params.values[1] != nil
+      number = statement_params.values[1].empty? ? nil : statement_params.values[1]
+    else
+      number = nil
+    end
     rate = rate(value)
-    if @account.balance >= value && params[:number].present? && @account.state == "open"
+    if @account.balance >= value && number != nil && @account.state == "open"
       if create_statement(@account, value, :transfer, rate)
         withdrawal(@account, value, rate)
-        to_account = movement(params[:number])
+        to_account = movement(number)
         create_statement(to_account, value, :transfer, 0.0, @bank_statement)
         crediting(to_account, value)
-        render :index
       else
-        render :new, status: :unprocessable_entity, notice: 'transferência não efetuado'
+        render :new_transfer, status: :unprocessable_entity, notice: 'transferência não efetuado'
       end
     elsif @account.balance >= value && @account.state == "open"
       if create_statement(@account, value, :transfer, rate)
         withdrawal(@account, value, rate)
-        render :index
       else
-        render :new, status: :unprocessable_entity, notice: 'transferência não efetuado'
+        render :ex_transfer, status: :unprocessable_entity, notice: 'transferência não efetuado'
       end
     else
-      render :new, status: :unprocessable_entity, notice: 'transferência não efetuado'
+      render :ex_transfer, status: :unprocessable_entity, notice: 'transferência não efetuado'
     end
+    redirect_to accounts_path
   end
 
   def statement
-    @bank_statements = BankStatement.created_between(params[:start_date], params[:end_date], @account.id)
+    if params["account"].present?
+      start_date = params["account"]["start_date"].empty? ? 7.day.ago.to_s : params["account"]["start_date"]
+      end_date = params["account"]["end_date"].empty? ? Time.now.to_s : params["account"]["end_date"]
+    else
+      start_date = 7.day.ago.to_s
+      end_date = Time.now.to_s
+    end
+
+    if start_date.to_date > end_date.to_date
+      aux = end_date
+      end_date = start_date
+      start_date = aux
+    end
+    end_date = (end_date.to_date + 1.day).to_s
+    @bank_statements = BankStatement.created_between(start_date, end_date, @account.id)
   end
 
   private

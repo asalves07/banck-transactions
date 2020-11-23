@@ -34,6 +34,12 @@ gem 'devise'
 
 gem "business_time"
 
+gem 'bootstrap', '~> 4.5.0'
+gem 'jquery-rails'
+gem 'font-awesome-sass', '~> 5.13.0'
+gem 'jquery-easing-rails'
+gem 'nprogress-rails'
+
 group :development, :test do
   gem 'pry-byebug', platforms: %i[mri mingw x64_mingw]
   gem 'rspec-rails', '~> 4.0.1'
