@@ -8,7 +8,7 @@ class AccountsController < ApplicationController
 
   def create
     @account = Account.new(
-      number: Faker::Number.number(digits: 10).to_s,
+      number: (rand 10000000000..99999999999).to_s,
       agency: "001",
       type_account: 1,
       balance: 0.0,
